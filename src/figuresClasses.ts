@@ -1,11 +1,100 @@
-export interface Figure {}
+export interface Figure {
+  shape: 'triangle' | 'circle' | 'rectangle';
+  color: 'red' | 'green' | 'blue';
+  getArea(): number; 
+}
 
-export class Triangle implements Figure {}
+type Color = 'red' | 'green' | 'blue';
 
-export class Circle implements Figure {}
+export class Triangle implements Figure {
+  shape: 'triangle' = 'triangle';
+  color: Color;
+  a: number;
+  b: number;
+  c: number;
+  
+  constructor(color: Color,
+    a: number,
+    b: number,
+    c: number) {
+    
+    if (a <= 0 || b <= 0 || c <= 0) {
+      throw new Error('your error message');
+    }
 
-export class Rectangle implements Figure {}
+    const max = Math.max(a, b, c);
+    const sum = a + b + c;
 
-export function getInfo(figure): string {
-  return typeof figure;
+    if (max >= sum - max) {
+      throw new Error('your error message');
+    }
+
+    this.color = color;
+    this.a = a;
+    this.b = b;
+    this.c = c;
+
+  }
+
+  getArea(): number {
+    const p = (this.a + this.b + this.c) / 2;
+    const area = Math.sqrt(p * (p - this.a) * (p - this.b) * (p - this.c));
+    
+    return Math.floor(area * 100) / 100;
+  }
+}
+
+export class Circle implements Figure {
+shape: 'circle' = 'circle';
+  color: Color;
+  radius: number;
+
+  constructor(color: Color,
+    radius: number) {
+    
+    if (radius <= 0) {
+      throw new Error('your error message');
+    }
+    
+    this.color = color;
+    this.radius = radius;
+  }
+
+  getArea(): number {
+    const s = Math.PI * this.radius ** 2;
+
+    return Math.floor(s * 100) / 100;
+  }
+}
+
+export class Rectangle implements Figure {
+  shape: 'rectangle' = 'rectangle';
+  color: Color;
+  width: number;
+  height: number;
+
+  constructor(color: Color,
+    width: number,
+    height: number) {
+    
+    if (width <= 0 || height <= 0) {
+      throw new Error('your error message');
+    }
+
+    this.color = color;
+    this.width = width;
+    this.height = height;
+  }
+
+  getArea(): number {
+
+    const s = this.width * this.height;
+
+    return  Math.floor(s * 100) / 100;
+  }
+
+}
+
+export function getInfo(figure: Figure): string {
+  return `A ${figure.color} ${figure.shape} - ${figure.getArea()}`;
 }
